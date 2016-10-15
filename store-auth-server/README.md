@@ -12,11 +12,11 @@ Following software packages needs to be installed on development machine in orde
  
 * Checkout code from github 
 ```
-$ git clone -b develop git@git.letv.cn:bin.gong/euicloudservice.git
-$ cd euicloudservice/      
+$ git clone -b develop https://github.com/hpatel-git/myRetailStore.git
+$ cd myRetailStore/store-auth-server/      
 ```
 
-* Build EUI cloud micro service code 
+* Build Authentication(OAuth2) Server
 ```
 $ mvn package docker:build -P docker
 ```
@@ -25,56 +25,48 @@ $ mvn package docker:build -P docker
 ```
 $ docker images
 REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
-leeco/eui-cloud-service      0.0.1-SNAPSHOT      738a2bacf4d9        22 minutes ago      417.1 MB
+hpatel511/store-auth-server   0.0.1               680d7c4c59d9        24 seconds ago      440.5 MB
 frolvlad/alpine-oraclejdk8   slim                ea24082fc934        6 weeks ago         167.1 MB
 ```
 
 * Run docker image 
 ``` 
-$ docker run -p 8080:8080 leeco/eui-cloud-service:0.0.1-SNAPSHOT 
+$ docker run -p 8181:8181 hpatel511/store-auth-server:0.0.1 
 ```
 
 * Verify service status
 ```
 $ docker ps
 CONTAINER ID        IMAGE                                    COMMAND                  CREATED              STATUS              PORTS               NAMES
-5636ee8659c6        leeco/eui-cloud-service:0.0.1-SNAPSHOT   "/docker-entrypoint.s"   About a minute ago   Up About a minute   3306/tcp          reverent
+4e8a0e1fb16c        hpatel511/store-auth-server:0.0.1   "/docker-entrypoint.s"   5 seconds ago       Up 5 seconds        3306/tcp, 0.0.0.0:8181->8181/tcp   tender_albattani
 ```
 
 * SSH into Docker Running Container to view log and access database 
 ```
-$ docker exec -it 5636ee8659c6 bash
+$ docker exec -it 4e8a0e1fb16c bash
 bash-4.3#
 ```
 
-* Save running docker image as tar file 
+* Push docker image Docker Hub 
 ```
-$ docker save leeco/eui-cloud-service:0.0.1-SNAPSHOT > eui-cloud-service-0.0.1-SNAPSHOT.tar
-```
-### Import docker image and run on other machine :  
- 
-* Download eui-cloud-service-0.0.1-SNAPSHOT from http://git.letv.cn/bin.gong/euicloudservice/blob/develop/eui-cloud-service-0.0.1-SNAPSHOT.tar
-```
-$ curl -O http://git.letv.cn/bin.gong/euicloudservice/blob/develop/eui-cloud-service-0.0.1-SNAPSHOT.tar
-% Total       % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                  Dload  Upload   Total   Spent    Left  Speed
- 100    98    0    98    0     0    262      0 --:--:-- --:--:-- --:--:--   262
-$ ls
-eui-cloud-service-0.0.1-SNAPSHOT.tar
+$ docker push myretail/store-auth-server:0.0.1
 ```
 
-* Load copied image to development machine 
+### Pull myRetail Authentication(OAuth2) server docker image from Docker Hub and run on other machine :  
+ 
+* Download myRetail Authentication(OAuth2) server from Docker Hub
 ```
-$ docker load -i eui-cloud-service-0.0.1-SNAPSHOT.tar
+$ docker pull hpatel511/store-auth-server:0.0.1
+$ docker run -p 8181:8181 hpatel511/store-auth-server:0.0.1
 ```
 
 * Run loaded image on other machin 
 ```
-$ docker run -p 8080:8080 leeco/eui-cloud-service:0.0.1-SNAPSHOT
+$ docker run -p 8181:8181 myretail/store-auth-server:0.0.1
 ```
 
 * Externalize Mysql Configuration 
 ```
-$ docker run -p 8080:8080 -e MYSQL_HOST=10.79.5.87 -e MYSQL_PORT=3306 -e MYSQL_USER=euidev -e MYSQL_PASSWORD=euidev -e MYSQL_DATABASE=eui_service_dev  leeco/eui-cloud-service:0.0.1-SNAPSHOT
+$ docker run -p 8181:8181 -e MYSQL_HOST=localhost -e MYSQL_PORT=3306 -e MYSQL_USER=dbadmin -e MYSQL_PASSWORD=dbadmin -e MYSQL_DATABASE=my_retail_store_ums  myretail/store-auth-server:0.0.1
 ``` 
  
