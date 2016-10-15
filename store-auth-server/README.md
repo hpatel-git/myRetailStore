@@ -49,7 +49,7 @@ bash-4.3#
 
 * Push docker image Docker Hub 
 ```
-$ docker push myretail/store-auth-server:0.0.1
+$ docker push hpatel511/store-auth-server:0.0.1
 ```
 
 ### Pull myRetail Authentication(OAuth2) server docker image from Docker Hub and run on other machine :  
