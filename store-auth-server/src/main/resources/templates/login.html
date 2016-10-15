@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<base href="/" />
+<style type="text/css">
+@import "bourbon";
+
+body {
+	background: #eee !important;
+}
+
+.wrapper {
+	margin-top: 80px;
+	margin-bottom: 80px;
+}
+
+.form-signin {
+	max-width: 380px;
+	padding: 15px 35px 45px;
+	margin: 0 auto;
+	background-color: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	.
+	form-signin-heading
+	,
+	.checkbox
+	{
+	margin-bottom
+	:
+	30px;
+}
+
+.checkbox {
+	font-weight: normal;
+}
+
+.form-control {
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	@
+	include
+	box-sizing(border-box);
+	&:
+	focus
+	{
+	z-index
+	:
+	2;
+}
+
+}
+input[type="text"] {
+	margin-bottom: -1px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+input[type="password"] {
+	margin-bottom: 20px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+}
+</style>
+
+<script type="text/javascript" th:src="@{/webjars/jquery/2.1.1/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/angularjs/angular.min.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/angular-messages/angular-messages.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/angular-modal-service/dst/angular-modal-service.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/angular-ui-router/angular-ui-router.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/angular-resource/angular-resource.min.js}" ></script>
+ 
+<title>Login page</title>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-inverse" role="navigation">
+		<div class="navbar-header">
+			<a class="navbar-brand" ui-sref="#">Welcome to myRetail Store </a>
+		</div>
+	</nav>
+
+	<div class="wrapper">
+
+		<form class="form-signin" th:action="@{/login}" 
+			method="post">
+			<h2 class="form-signin-heading">Please login</h2>
+			
+			<input type="text" class="form-control"  name="username" placeholder="Email Address" required="" autofocus="" /> 
+			<input type="password" class="form-control" style="margin-top: 10px;" name="password" placeholder="Password" required="" />
+			<div class="radio" >
+				<label> <input type="radio" name="defaultLocale" value="en_US" checked /> English</label>
+				 <label> <input type="radio" name="defaultLocale" value="zh_CN"  /> Chinese (Simplified)</label>	
+			</div>
+			<label class="checkbox">&nbsp; &nbsp;&nbsp; <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+			</label> <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+			<div style="color: red;display: none;padding-top: 10px;" id="errorMessage" >
+				Invalid credentials !!. Please try again.
+			</div>
+		</form>
+	</div>
+
+</body>
+<script type="text/javascript">
+	function getQueryParameter(parameterName) {
+		var queryString = window.top.location.search.substring(1);
+		var parameterName = parameterName + "=";
+		if (queryString.length > 0) {
+			begin = queryString.indexOf(parameterName);
+			if (begin != -1) {
+				begin += parameterName.length;
+				end = queryString.indexOf("&", begin);
+				if (end == -1) {
+					end = queryString.length
+				}
+				return unescape(queryString.substring(begin, end));
+			}
+		}
+		return "null";
+	}
+	if(getQueryParameter('error') == 'true'){
+		document.getElementById('errorMessage').style.display="";
+	}
+</script>
+</html>
