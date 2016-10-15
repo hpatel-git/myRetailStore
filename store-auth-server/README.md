@@ -65,8 +65,15 @@ $ docker run -p 8181:8181 hpatel511/store-auth-server:0.0.1
 $ docker run -p 8181:8181 myretail/store-auth-server:0.0.1
 ```
 
-* Externalize Mysql Configuration 
+* Externalize Mysql Configuration( If you want to use MySQL on host machine instead of docker) 
 ```
 $ docker run -p 8181:8181 -e MYSQL_HOST=localhost -e MYSQL_PORT=3306 -e MYSQL_USER=dbadmin -e MYSQL_PASSWORD=dbadmin -e MYSQL_DATABASE=my_retail_store_ums  myretail/store-auth-server:0.0.1
+```
+* Generate Administrator token to update Price information of product ( default user name / password : sysadmin/sysadmin )
+```
+curl acme:acmesecret@192.168.99.100:8181/store-auth-server/oauth/token -d grant_type=password -d username=sysadmin -d password=sysadmin
 ``` 
+
+
+
  
