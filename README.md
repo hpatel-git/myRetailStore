@@ -84,5 +84,43 @@ $ curl -XPUT -H 'Authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJh
  
 ```
 
+## myRetail Pricing Server
+
+myRetail Pricing Server stores product price data into MongoDB(noSQL) server. Pricing Server is internal service. It will not be exposed out side network. Only myRetail API Gateway server can call this service. By default this service run on 8183 port
+with context 'pricing-api'
+
+myRetail Pricing Server documer image available on Docker Hub. 
+
+**Available APIs** <br>
+* Get Price Details  By Product ID<br>
+**Path :** pricing-api/v1/products/<PRODUCT_ID>/price <br>
+**HTTP Method:** GET<br>
+**HTTP Response :** HTTP 200 OK<br>
+
+**Sample API Request :**
+```sh
+   curl -i http://192.168.99.100:8183/pricing-api/v1/products/15117729/price
+```
+**Sample API Response :** 
+```sh
+{
+   "productId":15117729,
+   "price":520.23,
+   "currencyCode":"USD"
+} 
+```
+* Update Price API <br>
+**Path :** pricing-api/v1/products/<PRODUCT_ID>/price<br>
+**HTTP Method :** PUT<br>
+**Response Type :** HTTP 302 No Content<br>
+
+**Sample API Request :**
+
+```sh
+
+$ curl -XPUT -H "Content-type: application/json" -d '{"productId":15117729,"price":45.23,"currencyCode":"INR"}' 'http://192.168.99.100:8183/pricing-api/v1/products/15117729/price'
+ 
+```
+
 ## Architecture Diagram 
 ![myimage-alt-tag](https://github.com/hpatel-git/myRetailStore/blob/develop/docs/architecture_diagram.png)
