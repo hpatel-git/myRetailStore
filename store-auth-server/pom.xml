@@ -169,6 +169,7 @@
 					<include>**/*.png</include>
 					<include>**/*.json</include>
 					<include>**/*.sql</include>
+					<include>**/*.txt</include>
 				</includes>
 				<excludes>
 					<exclude>**/*.jks</exclude>
@@ -188,6 +189,7 @@
 					<exclude>**/*.png</exclude>
 					<exclude>**/*.json</exclude>
 					<exclude>**/*.sql</exclude>
+					<exclude>**/*.txt</exclude>
                 </excludes>
             </resource>
 		</resources>
