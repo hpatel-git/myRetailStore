@@ -12,7 +12,12 @@ myRetailStore has used Micro Service Architecture. Below are list of micro servi
 APIs are open API means no authetnication is required. In order to update product price , update product price API requires Oauth2
 token with Administrator privileges
 
-myRetailAuth Server Docker image is available on Docker Hub.
+myRetailAuth Server Docker image is available on Docker Hub. Install on local using following commands
+
+```sh
+$ docker pull hpatel511/store-auth-server:0.0.1
+$ docker run -p 8181:8181 hpatel511/store-auth-server:0.0.1
+```
 
 myRetailAuth Server is running on 8181 port with 'store-auth-server' as context. By default following users are available 
 * User Name : **sysadmin** , Password : **sysadmin** , Role : ROLE_ADMIN
@@ -41,8 +46,13 @@ Sample Response :
   calls Thirdparty Product Detail API and Internal Pricing API to get product data. This service also aggregate data from both 
   Product Detail API and Pricing API and returns to caller.
   
-  By default this service runs on 8182 port with context 'store-api'. 
-  
+  By default this service runs on 8182 port with context 'store-api'. Download API server image from Docker Hub as follow
+
+```sh
+$ docker pull hpatel511/store-api:0.0.1
+$ docker run -p 8182:8182 -e PRICE_LOOKUP_HOST=192.168.99.100 -e PRICE_LOOKUP_PORT=8183 hpatel511/store-api:0.0.1
+```
+
 **Few Design Decisions** :
 * myRetail API will not return partial response means if any one of the servers from Product Detail or Price Details are down , then Product retrieval API will fail. 
 * Product Detail Server is down and only Price Details Service is up and running then , Price Update API will result 
@@ -90,6 +100,11 @@ myRetail Pricing Server stores product price data into MongoDB(noSQL) server. Pr
 with context 'pricing-api'
 
 myRetail Pricing Server documer image available on Docker Hub. 
+
+```sh
+$ docker pull hpatel511/store-pricing-api:0.0.1
+$ docker run -p 8183:8183 -e MONGODB_HOST=10.0.0.9 -e MONGODB_PORT=27017 -e MONGODB_DATABASE=my_retail_product_price_db hpatel511/store-pricing-api:0.0.1
+```
 
 **Available APIs** <br>
 * Get Price Details  By Product ID<br>
