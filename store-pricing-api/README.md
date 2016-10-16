@@ -8,7 +8,27 @@ Following software packages needs to be installed on development machine in orde
 * Maven  3.3.9+
 * Spring Tool Suite(Optional)
 
-### Follow below steps to build and run service on your local machine: 
+### Pull myRetail Pricing Server docker image from Docker Hub and run on local machine :  
+ 
+* Download myRetail Pricing  server from Docker Hub
+```
+$ docker pull hpatel511/store-pricing-api:0.0.1
+$ docker run -p 8183:8183 hpatel511/store-pricing-api:0.0.1
+```
+
+* Run loaded image 
+```
+$ docker run -p 8183:8183 -e MONGODB_HOST=10.0.0.9 -e MONGODB_PORT=27017 -e MONGODB_DATABASE=my_retail_product_price_db hpatel511/store-pricing-api:0.0.1
+```
+
+* Health Check for API Gateway
+```
+curl -i http://192.168.99.100:8183/store-pricing-api/health
+
+{"status":"UP"}
+``` 
+
+### Follow below steps to build from source code and run service on your local machine: 
  
 * Checkout code from github 
 ```
@@ -46,25 +66,6 @@ CONTAINER ID        IMAGE                                    COMMAND            
 $ docker push hpatel511/store-pricing-api:0.0.1
 ```
 
-### Pull myRetail Pricing Server docker image from Docker Hub and run on other machine :  
- 
-* Download myRetail Pricing  server from Docker Hub
-```
-$ docker pull hpatel511/store-pricing-api:0.0.1
-$ docker run -p 8183:8183 hpatel511/store-pricing-api:0.0.1
-```
-
-* Run loaded image 
-```
-$ docker run -p 8183:8183 -e MONGODB_HOST=10.0.0.9 -e MONGODB_PORT=27017 -e MONGODB_DATABASE=my_retail_product_price_db hpatel511/store-pricing-api:0.0.1
-```
-
-* Health Check for API Gateway
-```
-curl -i http://192.168.99.100:8183/store-pricing-api/health
-
-{"status":"UP"}
-``` 
 
 
 
