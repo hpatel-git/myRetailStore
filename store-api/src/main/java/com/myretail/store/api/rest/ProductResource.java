@@ -3,6 +3,7 @@
  */
 package com.myretail.store.api.rest;
 
+import java.util.Currency;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -11,19 +12,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myretail.store.api.exception.BadRequestException;
 import com.myretail.store.api.exception.LookupServiceException;
 import com.myretail.store.api.model.ApiResponseBody;
 import com.myretail.store.api.model.ApiResponseBody.ResponseBuilder;
 import com.myretail.store.api.model.BaseServiceResponse;
+import com.myretail.store.api.model.ErrorDetail;
 import com.myretail.store.api.model.PriceDetail;
 import com.myretail.store.api.model.PriceServiceResponse;
+import com.myretail.store.api.model.PriceUpdateRequest;
 import com.myretail.store.api.model.ProductDetail;
 import com.myretail.store.api.model.ProductServiceResponse;
 import com.myretail.store.api.service.PriceLookupService;
@@ -65,10 +71,10 @@ public class ProductResource {
 		PriceServiceResponse priceDetailsRes = null;
 		try {
 			if (productServiceResponse.get().getIsError()) {
-				return handleProductServiceError(productServiceResponse);
+				throw new BadRequestException("Bad response from Product Service",handleProductServiceError(productServiceResponse));
 			}
 			if (pricingServiceResponse.get().getIsError()) {
-				return handleProductServiceError(pricingServiceResponse);
+				throw new BadRequestException("Bad Response from Pricing Service", handleProductServiceError(pricingServiceResponse));
 			}
 			priceDetailsRes = (PriceServiceResponse) pricingServiceResponse.get();
 			productDetailRes = (ProductServiceResponse) productServiceResponse.get();
@@ -78,18 +84,43 @@ public class ProductResource {
 			throw new LookupServiceException(e.getCause().getMessage());
 		} 
 		ProductDetail details = new ProductDetail.ProductDetailBuilder(productDetailRes.getProductId(),
-				productDetailRes.getProductName()).price(new PriceDetail(priceDetailsRes.getValue(), priceDetailsRes.getCurrencyCode())).build();
+				productDetailRes.getProductName()).price(new PriceDetail(priceDetailsRes.getPrice(), priceDetailsRes.getCurrencyCode().getSymbol())).build();
 		return new ApiResponseBody.ResponseBuilder<ProductDetail>(details).build();
 	}
 
 	/**
 	 * Update product price.
 	 */
-	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH, consumes = {
-			MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
-	@ResponseStatus(HttpStatus.CREATED)
-	public void updateProductPrice() {
-
+	@RequestMapping(value = "/{id}/price", method = RequestMethod.PATCH, consumes = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateProductPrice(@PathVariable("id")Long productId, @RequestBody(required = true) PriceUpdateRequest priceUpdateRequest) {
+		priceUpdateRequest.setProductId(productId);
+		if (!StringUtils.isEmpty(priceUpdateRequest.getCurrencyCode())) { // Validate Currency Code
+			try {
+				Currency.getInstance(priceUpdateRequest.getCurrencyCode());
+			} catch (IllegalArgumentException e) {
+				LOGGER.error("Invalid Currency Code", e);
+				throw new BadRequestException("Invalid Currency Code");
+			}
+		}
+		Future<BaseServiceResponse> pricingServiceResponse = priceLookupService.updatePrice(priceUpdateRequest);
+		while(!pricingServiceResponse.isDone()){
+			try {
+				Thread.sleep(10); // Check status at every 10 ms
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				LOGGER.error("Error while waiting to complete", e);
+			}
+		}
+		try {
+			if (pricingServiceResponse.get().getIsError()) {
+				throw new BadRequestException("Bad Response from Pricing Service", handleProductServiceError(pricingServiceResponse));
+			}
+		} catch(ExecutionException | InterruptedException e){
+			LOGGER.error("Error while updating price details from PriceLookupService ", e);
+			throw new LookupServiceException(e.getCause().getMessage());
+		} 
 	}
 
 	/**
@@ -117,12 +148,12 @@ public class ProductResource {
 	 * @throws InterruptedException the interrupted exception
 	 * @throws ExecutionException the execution exception
 	 */
-	private ApiResponseBody<ProductDetail> handleProductServiceError(Future<BaseServiceResponse> productResponse)
+	private ApiResponseBody<ErrorDetail> handleProductServiceError(Future<BaseServiceResponse> productResponse)
 			throws InterruptedException, ExecutionException {
-		ResponseBuilder<ProductDetail> errorResponse = new ApiResponseBody.ResponseBuilder<>();
+		ResponseBuilder<ErrorDetail> errorResponse = new ApiResponseBody.ResponseBuilder<>();
 		productResponse.get().getErrors().stream().forEach(errorResponse::addMoreError);
 		return errorResponse.build();
 	}
 
-	 
+	
 }

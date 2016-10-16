@@ -37,9 +37,11 @@ import com.myretail.store.api.model.ProductServiceResponse;
 @Service
 public class ProductLookupService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductLookupService.class);
+	
 	@Value("${product.lookup.url}")
 	private String productLookupUrl;
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProductLookupService.class);
+	
 
 	private final RestTemplate restTemplate;
 	private ObjectMapper objectMapper;
@@ -78,7 +80,7 @@ public class ProductLookupService {
 			response.setProductName(productDescription);
 		} catch (Exception e) {
 			LOGGER.error("Error while looking up product details", e);
-			throw new LookupServiceException("Error while looking up product details from Product Lookup Service ");
+			throw new LookupServiceException("Product Lookup Service is unavailable ");
 		}
 		return new AsyncResult<>(response);
 	}

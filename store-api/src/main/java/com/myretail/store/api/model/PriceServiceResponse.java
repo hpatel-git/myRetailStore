@@ -2,6 +2,10 @@
  * @ copyright 2016, myRetail Corporation.
  */
 package com.myretail.store.api.model;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+
 /**
  * The Class PriceServiceResponse.
  * @author Hardikkumar patel(hardikkumar.ce@gmail.com)
@@ -10,28 +14,44 @@ package com.myretail.store.api.model;
  */
 public class PriceServiceResponse extends BaseServiceResponse{
 
-	/** The value. */
-	private double value;
-	
-	/** The currency code. */
-	private String currencyCode;
+	private Long productId;
+	private BigDecimal price;
+	private Currency currencyCode;
 
 	/**
-	 * Gets the value.
+	 * Gets the product id.
 	 *
-	 * @return the value
+	 * @return the product id
 	 */
-	public double getValue() {
-		return value;
+	public Long getProductId() {
+		return productId;
 	}
 
 	/**
-	 * Sets the value.
+	 * Sets the product id.
 	 *
-	 * @param value the new value
+	 * @param productId the new product id
 	 */
-	public void setValue(double value) {
-		this.value = value;
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+	/**
+	 * Gets the price.
+	 *
+	 * @return the price
+	 */
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	/**
+	 * Sets the price.
+	 *
+	 * @param price the new price
+	 */
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 
 	/**
@@ -39,7 +59,7 @@ public class PriceServiceResponse extends BaseServiceResponse{
 	 *
 	 * @return the currency code
 	 */
-	public String getCurrencyCode() {
+	public Currency getCurrencyCode() {
 		return currencyCode;
 	}
 
@@ -48,7 +68,7 @@ public class PriceServiceResponse extends BaseServiceResponse{
 	 *
 	 * @param currencyCode the new currency code
 	 */
-	public void setCurrencyCode(String currencyCode) {
+	public void setCurrencyCode(Currency currencyCode) {
 		this.currencyCode = currencyCode;
 	}
 
@@ -57,10 +77,9 @@ public class PriceServiceResponse extends BaseServiceResponse{
 	 */
 	@Override
 	public String toString() {
-		return "PriceServiceResponse [value=" + value + ", currencyCode=" + currencyCode + ", getValue()=" + getValue()
-				+ ", getCurrencyCode()=" + getCurrencyCode() + ", getErrors()=" + getErrors() + ", getIsError()="
-				+ getIsError() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
-				+ super.toString() + "]";
+		return "PriceServiceResponse [productId=" + productId + ", price=" + price + ", currencyCode=" + currencyCode
+				+ "]";
 	}
+	
 
 }

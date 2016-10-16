@@ -6,6 +6,8 @@ package com.myretail.store.api.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * The Class BaseServiceResponse is abstract class which extends by all Lookup
  * Service Response. This class contains common attributes and methods to add
@@ -17,7 +19,10 @@ import java.util.List;
  */
 public abstract class BaseServiceResponse {
 
+	@JsonIgnore
 	private boolean isError;
+	
+	@JsonIgnore
 	private List<ErrorDetail> errors = new ArrayList<>();
 
 	/**

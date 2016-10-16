@@ -129,6 +129,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>com.myretail.store.auth2.StoreAuth2Server</start-class>
 		<java.version>1.8</java.version>
+		<docker.image.prefix>hpatel511</docker.image.prefix>
 	</properties>
 
 	<profiles>
@@ -168,6 +169,7 @@
 					<include>**/*.png</include>
 					<include>**/*.json</include>
 					<include>**/*.sql</include>
+					<include>**/*.txt</include>
 				</includes>
 				<excludes>
 					<exclude>**/*.jks</exclude>
@@ -187,6 +189,7 @@
 					<exclude>**/*.png</exclude>
 					<exclude>**/*.json</exclude>
 					<exclude>**/*.sql</exclude>
+					<exclude>**/*.txt</exclude>
                 </excludes>
             </resource>
 		</resources>
@@ -195,6 +198,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.3.5.RELEASE</version>
 				<configuration>
 				    <executable>true</executable>
 				</configuration>

@@ -17,7 +17,7 @@ EXPOSE 3306
 
 VOLUME /tmp
 
-ADD eui-cloud-service-dashboard-0.0.1-SNAPSHOT.jar app.jar
+ADD store-auth-server-0.0.1.jar app.jar
 
 RUN sh -c 'touch /app.jar'
 

@@ -11,9 +11,9 @@ if [ -z "$MYSQL_HOST" ]; then
   	
   	/usr/share/mysql/mysql.server start
  
-	ADD_DB_QUERY="CREATE DATABASE IF NOT EXISTS eui_service_dev;"
-	ADD_USER_QUERY="CREATE USER 'euidev'@'localhost' IDENTIFIED BY 'euidev';"
-	ADD_GRANT="GRANT ALL PRIVILEGES ON eui_service_dev.* TO 'euidev'@'localhost';"
+	ADD_DB_QUERY="CREATE DATABASE IF NOT EXISTS my_retail_store_ums;"
+	ADD_USER_QUERY="CREATE USER 'dbadmin'@'localhost' IDENTIFIED BY 'dbadmin';"
+	ADD_GRANT="GRANT ALL PRIVILEGES ON my_retail_store_ums.* TO 'dbadmin'@'localhost';"
 
 
 	echo 'Schema and User creation start'
@@ -24,7 +24,7 @@ if [ -z "$MYSQL_HOST" ]; then
 
 	echo 'Schema has been created successfully'
 
-	$MYSQL eui_service_dev < /init-data.sql
+	$MYSQL my_retail_store_ums < /init-data.sql
 
 	echo 'Data imported successfully'
 
@@ -36,20 +36,20 @@ if [ -z "$MYSQL_PORT" ]; then
 fi
 
 if [ -z "$MYSQL_USER" ]; then
-    export MYSQL_USER=euidev
+    export MYSQL_USER=dbadmin
 fi
 
 if [ -z "$MYSQL_PASSWORD" ]; then
-    export MYSQL_PASSWORD=euidev
+    export MYSQL_PASSWORD=dbadmin
 fi
 
 if [ -z "$MYSQL_DATABASE" ]; then
-    export MYSQL_DATABASE=eui_service_dev
+    export MYSQL_DATABASE=my_retail_store_ums
 fi
  
 echo My Sql Host : $MYSQL_HOST Port : $MYSQL_PORT User Name : $MYSQL_USER Password : $MYSQL_PASSWORD Default Database : $MYSQL_DATABASE 
   
-echo '................................Starting EUI Dev Micro Service.............................'
+echo '................................Starting myRetail Authentication(OAuth2) Server.............................'
 java -jar /app.jar
 
 exec "$@"

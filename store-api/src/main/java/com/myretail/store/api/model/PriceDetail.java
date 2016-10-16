@@ -3,6 +3,8 @@
  */
 package com.myretail.store.api.model;
 
+import java.math.BigDecimal;
+
 /**
  * The Class PriceDetail.
  * 
@@ -14,7 +16,7 @@ package com.myretail.store.api.model;
 public class PriceDetail {
 
 	/** The value. */
-	private double value;
+	private BigDecimal price;
 
 	/** The currency code. */
 	private String currencyCode;
@@ -27,8 +29,8 @@ public class PriceDetail {
 	 * @param currencyCode
 	 *            the currency code
 	 */
-	public PriceDetail(double value, String currencyCode) {
-		this.value = value;
+	public PriceDetail(BigDecimal price, String currencyCode) {
+		this.price = price;
 		this.currencyCode = currencyCode;
 	}
 
@@ -37,8 +39,8 @@ public class PriceDetail {
 	 *
 	 * @return the value
 	 */
-	public double getValue() {
-		return value;
+	public BigDecimal getPrice() {
+		return price;
 	}
 
 	/**
@@ -55,7 +57,7 @@ public class PriceDetail {
 	 */
 	@Override
 	public String toString() {
-		return "PriceDetail [value=" + value + ", currencyCode=" + currencyCode + "]";
+		return "PriceDetail [value=" + price + ", currencyCode=" + currencyCode + "]";
 	}
 
 }

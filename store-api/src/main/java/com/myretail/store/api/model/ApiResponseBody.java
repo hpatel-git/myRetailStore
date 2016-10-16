@@ -3,6 +3,7 @@
  */
 package com.myretail.store.api.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +21,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class ApiResponseBody<T> {
+public class ApiResponseBody<T>  implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	private boolean success;
 	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 	private List<ErrorDetail> errors = new ArrayList<>();
