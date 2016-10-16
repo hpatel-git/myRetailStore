@@ -23,7 +23,7 @@ $ docker run -p 8183:8183 -e MONGODB_HOST=10.0.0.9 -e MONGODB_PORT=27017 -e MONG
 
 * Health Check for API Gateway
 ```
-curl -i http://192.168.99.100:8183/store-pricing-api/health
+curl -i http://192.168.99.100:8183/pricing-api/health
 
 {"status":"UP"}
 ``` 
