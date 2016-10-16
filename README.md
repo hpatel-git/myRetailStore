@@ -48,7 +48,41 @@ Sample Response :
 * Product Detail Server is down and only Price Details Service is up and running then , Price Update API will result 
   into success
   
-  
+**Available APIs** <br>
+* Get Product Details <br>
+**Path :** store-api/v1/products/<PRODUCT_ID> <br>
+**HTTP Method:** GET<br>
+**HTTP Response :** HTTP 200 OK<br>
+
+**Sample API Request :**
+```sh
+   curl -i curl -i http://192.168.99.100:8182/store-api/v1/products/15117729
+```
+**Sample API Response :** 
+```sh
+{
+   "success":true,
+   "data":{
+      "productId":15117729,
+      "productName":"Apple iPad Air 2 Wi-Fi 16GB, Gold",
+      "priceDetail":{
+         "price":520.23,
+         "currencyCode":"INR"
+      }
+   }
+}
+```
+* Update Price API <br>
+**Path :** store-api/v1/products/<PRODUCT_ID>/price<br>
+**HTTP Method :** PUT<br>
+**Response Type :** HTTP 302 No Content<br>
+
+**Sample API Request :**
+```sh
+
+$ curl -XPUT -H 'Authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsic3RvcmUtb2F1dGgyLXJlc291cmNlIl0sInVzZXJfbmFtZSI6InN5c2FkbWluIiwic2NvcGUiOlsib3BlbmlkIl0sImV4cCI6MTQ3NjY4NjU4OCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdLCJqdGkiOiJlODNhOGYxNS01YzJiLTQ5ZmQtODgwYi1mYmYxZjA0Zjc3ZTUiLCJjbGllbnRfaWQiOiJhY21lIn0.mAG6A8oQex3okyJmiwy7TQwRJ1TG3JYbOThX3qpWcSJRgd-tNUYtSMuk0N2fS_khGQ08fHEfNePb7DoivQsPDk7ioHz7ROuyMAVbnf9pGPeuScXkxy6A3DmTHn7-LzIlMlv7rgBLAsHiSMm966VH427IJcmGYew7h3Lf3X4UVP_zvZSoqvxgKEfK7fBYG5ntHqHa7xWRfICygedWul-cLAZQvo3JU89Nt87foO0U0uacpHqBK8yeHXWuZAVOHnkb84NeE_FiN5lxVHKcE8d4J2xeCcaqY5ECS3AtgaPG24GPSdaXfH6RiJkeDOQXmHAVzgsvmQTaKVRk_Crrx9XqXw' -H "Content-type: application/json" -d '{"productId":15117729,"price":520.23,"currencyCode":"INR"}' 'http://192.168.99.100:8182/store-api/v1/products/15117729/price'
+ 
+```
 
 ## Architecture Diagram 
 ![myimage-alt-tag](https://github.com/hpatel-git/myRetailStore/blob/develop/docs/architecture_diagram.png)
