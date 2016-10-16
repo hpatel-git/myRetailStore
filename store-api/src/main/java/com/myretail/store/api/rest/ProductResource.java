@@ -3,25 +3,34 @@
  */
 package com.myretail.store.api.rest;
 
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.myretail.store.api.exception.BadRequestException;
 import com.myretail.store.api.exception.LookupServiceException;
 import com.myretail.store.api.model.ApiResponseBody;
 import com.myretail.store.api.model.ApiResponseBody.ResponseBuilder;
 import com.myretail.store.api.model.BaseServiceResponse;
+import com.myretail.store.api.model.ErrorDetail;
 import com.myretail.store.api.model.PriceDetail;
 import com.myretail.store.api.model.PriceServiceResponse;
 import com.myretail.store.api.model.ProductDetail;
@@ -65,10 +74,10 @@ public class ProductResource {
 		PriceServiceResponse priceDetailsRes = null;
 		try {
 			if (productServiceResponse.get().getIsError()) {
-				return handleProductServiceError(productServiceResponse);
+				throw new BadRequestException("Bad response from Product Service",handleProductServiceError(productServiceResponse));
 			}
 			if (pricingServiceResponse.get().getIsError()) {
-				return handleProductServiceError(pricingServiceResponse);
+				throw new BadRequestException("Bad Response from Pricing Service", handleProductServiceError(pricingServiceResponse));
 			}
 			priceDetailsRes = (PriceServiceResponse) pricingServiceResponse.get();
 			productDetailRes = (ProductServiceResponse) productServiceResponse.get();
@@ -117,12 +126,38 @@ public class ProductResource {
 	 * @throws InterruptedException the interrupted exception
 	 * @throws ExecutionException the execution exception
 	 */
-	private ApiResponseBody<ProductDetail> handleProductServiceError(Future<BaseServiceResponse> productResponse)
+	private ApiResponseBody<ErrorDetail> handleProductServiceError(Future<BaseServiceResponse> productResponse)
 			throws InterruptedException, ExecutionException {
-		ResponseBuilder<ProductDetail> errorResponse = new ApiResponseBody.ResponseBuilder<>();
+		ResponseBuilder<ErrorDetail> errorResponse = new ApiResponseBody.ResponseBuilder<>();
 		productResponse.get().getErrors().stream().forEach(errorResponse::addMoreError);
 		return errorResponse.build();
 	}
 
+	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ApiResponseBody<ErrorDetail> handleTypeMismatchException(HttpServletRequest req,
+			MethodArgumentTypeMismatchException ex) {
+		ResponseBuilder<ErrorDetail> errorResponse = new ApiResponseBody.ResponseBuilder<>();
+		errorResponse.addMoreError("Invalid value for field " + ex.getName() + ". Value  '" + ex.getValue() + "' is not allowed");
+		return errorResponse.build();
+	}
 	 
+	@ExceptionHandler(BadRequestException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ApiResponseBody<ErrorDetail> handleBadRequest(HttpServletRequest req,
+			BadRequestException ex) {
+		return ex.getErrorDetails();
+	}
+	
+	@ExceptionHandler(LookupServiceException.class)
+	@ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
+	@ResponseBody
+	public ApiResponseBody<ErrorDetail> handleLookupServiceException(HttpServletRequest req,
+			LookupServiceException ex) {
+		ResponseBuilder<ErrorDetail> errorResponse = new ApiResponseBody.ResponseBuilder<>(ex.getMessage());
+		return errorResponse.build();
+	}
 }

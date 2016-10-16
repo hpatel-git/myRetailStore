@@ -6,6 +6,9 @@ package com.myretail.store.api.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.myretail.store.api.model.ApiResponseBody;
+import com.myretail.store.api.model.ErrorDetail;
+
 /**
  * The Class LookupServiceException is used to bubble up exception details from Lookup Service to Resource.
  * 
@@ -14,26 +17,23 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @since   10/15/2016
  */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class LookupServiceException extends RuntimeException {
+public class BadRequestException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Instantiates a new lookeup service exception.
-	 *
-	 * @param msg the msg
-	 * @param t the t
-	 */
-	public LookupServiceException(String msg, Throwable t) {
-		super(msg, t);
-	}
-
+	private final ApiResponseBody<ErrorDetail> errorDetails;
+	 
 	/**
 	 * Instantiates a new lookeup service exception.
 	 *
 	 * @param msg the msg
 	 */
-	public LookupServiceException(String msg) {
+	public BadRequestException(String msg, ApiResponseBody<ErrorDetail> errorDetails) {
 		super(msg);
+		this.errorDetails = errorDetails;
 	}
+
+	public ApiResponseBody<ErrorDetail> getErrorDetails() {
+		return errorDetails;
+	}
+	
 }

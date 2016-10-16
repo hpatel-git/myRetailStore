@@ -80,7 +80,7 @@ public class ProductLookupService {
 			response.setProductName(productDescription);
 		} catch (Exception e) {
 			LOGGER.error("Error while looking up product details", e);
-			throw new LookupServiceException("Error while looking up product details from Product Lookup Service ");
+			throw new LookupServiceException("Product Lookup Service is unavailable ");
 		}
 		return new AsyncResult<>(response);
 	}

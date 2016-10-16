@@ -61,7 +61,7 @@ public class PriceLookupService {
 			response = restTemplate.getForObject(url, PriceServiceResponse.class);
 		} catch (Exception e) {
 			LOGGER.error("Error while looking up product details", e);
-			throw new LookupServiceException("Error while looking up price details from PriceLookupService ");
+			throw new LookupServiceException("Price Lookup Service is unavailable");
 		}
 		return new AsyncResult<>(response);
 	}
