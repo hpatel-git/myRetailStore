@@ -16,9 +16,9 @@ $ git clone -b develop https://github.com/hpatel-git/myRetailStore.git
 $ cd myRetailStore/store-api/      
 ```
 
-* Build Authentication(OAuth2) Server
+* Build API Gateway Server
 ```
-$ mvn package docker:build
+$ mvn package docker:build -P docker
 ```
 
 * View generated docker images
@@ -54,7 +54,7 @@ $ docker push hpatel511/store-api:0.0.1
 
 ### Pull myRetail API Gateway docker image from Docker Hub and run on other machine :  
  
-* Download myRetail Authentication(OAuth2) server from Docker Hub
+* Download myRetail API Gateway server from Docker Hub
 ```
 $ docker pull hpatel511/store-api:0.0.1
 $ docker run -p 8182:8182 hpatel511/store-api:0.0.1
@@ -62,7 +62,7 @@ $ docker run -p 8182:8182 hpatel511/store-api:0.0.1
 
 * Run loaded image on other machin 
 ```
-$ docker run -p 8181:8181 myretail/store-auth-server:0.0.1
+$ docker run -p 8182:8182 myretail/store-auth-server:0.0.1
 ```
 
 * Health Check for API Gateway
