@@ -69,6 +69,7 @@ public class ProductLookupService {
 		ProductServiceResponse response = new ProductServiceResponse();
 		try {
 			LOGGER.info("Looking up product details by Product Id : " + productId);
+			response.setProductId(productId);
 			String url = String.format(productLookupUrl, productId);
 			String responseString = restTemplate.getForObject(url, String.class);
 			JsonNode root = objectMapper.readTree(responseString);

@@ -8,7 +8,28 @@ Following software packages needs to be installed on development machine in orde
 * Maven  3.3.9+
 * Spring Tool Suite(Optional)
 
-### Follow below steps to build and run service on your local machine: 
+
+### Pull myRetail API Gateway docker image from Docker Hub and run on other machine :  
+ 
+* Download myRetail API Gateway server image from Docker Hub
+```
+$ docker pull hpatel511/store-api:0.0.1
+$ docker run -p 8182:8182 hpatel511/store-api:0.0.1
+```
+
+* Run loaded image on local machine 
+```
+$ docker run -p 8182:8182 -e PRICE_LOOKUP_HOST=192.168.99.100 -e PRICE_LOOKUP_PORT=8183 hpatel511/store-api:0.0.1
+```
+
+* Health Check for API Gateway
+```
+curl -i http://192.168.99.100:8182/store-api/health
+
+{"status":"UP"}
+``` 
+
+### Follow below steps to build from source code and run service on your local machine: 
  
 * Checkout code from github 
 ```
@@ -51,27 +72,5 @@ bash-4.3#
 ```
 $ docker push hpatel511/store-api:0.0.1
 ```
-
-### Pull myRetail API Gateway docker image from Docker Hub and run on other machine :  
- 
-* Download myRetail API Gateway server from Docker Hub
-```
-$ docker pull hpatel511/store-api:0.0.1
-$ docker run -p 8182:8182 hpatel511/store-api:0.0.1
-```
-
-* Run loaded image on other machin 
-```
-$ docker run -p 8182:8182 myretail/store-auth-server:0.0.1
-```
-
-* Health Check for API Gateway
-```
-curl -i http://192.168.99.100:8182/store-api/health
-
-{"status":"UP"}
-``` 
-
-
 
  

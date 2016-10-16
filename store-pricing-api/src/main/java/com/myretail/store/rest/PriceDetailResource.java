@@ -20,7 +20,7 @@ import com.myretail.store.service.PriceDetailService;
  * The Class PriceDetailResource.
  */
 @RestController
-@RequestMapping("/v1/product/{id}/price")
+@RequestMapping("/v1/products/{id}/price")
 public class PriceDetailResource {
 
 	/** The Constant LOGGER. */

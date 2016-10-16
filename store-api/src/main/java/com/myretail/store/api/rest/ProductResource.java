@@ -91,7 +91,7 @@ public class ProductResource {
 	/**
 	 * Update product price.
 	 */
-	@RequestMapping(value = "/{id}/price", method = RequestMethod.PATCH, consumes = {
+	@RequestMapping(value = "/{id}/price", method = RequestMethod.PUT, consumes = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void updateProductPrice(@PathVariable("id")Long productId, @RequestBody(required = true) PriceUpdateRequest priceUpdateRequest) {
