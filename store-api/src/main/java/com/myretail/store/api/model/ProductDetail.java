@@ -13,7 +13,8 @@ public class ProductDetail {
 
 	private long productId;
 	private String productName;
-	private PriceDetail price;
+
+	private PriceDetail priceDetail;
 
 	/**
 	 * Instantiates a new product detail.
@@ -23,7 +24,7 @@ public class ProductDetail {
 	public ProductDetail(ProductDetailBuilder productBuilder) {
 		this.productId = productBuilder.productId;
 		this.productName = productBuilder.productName;
-		this.price = productBuilder.price;
+		this.priceDetail = productBuilder.price;
 	}
 
 	/**
@@ -49,8 +50,8 @@ public class ProductDetail {
 	 *
 	 * @return the price
 	 */
-	public PriceDetail getPrice() {
-		return price;
+	public PriceDetail getPriceDetail() {
+		return priceDetail;
 	}
 
 	/**
@@ -124,7 +125,7 @@ public class ProductDetail {
 	 * @param price the new price
 	 */
 	public void setPrice(PriceDetail price) {
-		this.price = price;
+		this.priceDetail = price;
 	}
 	
 
