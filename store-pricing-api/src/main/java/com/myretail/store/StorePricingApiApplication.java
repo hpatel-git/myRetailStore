@@ -11,8 +11,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.myretail.store.dao.ProrductPriceDetailRepository;
-import com.myretail.store.entity.ProrductPriceDetail;
+import com.myretail.store.dao.PriceDetailRepository;
+import com.myretail.store.entity.PriceDetail;
 
 /**
  * The Class StorePricingApiApplication.
@@ -21,7 +21,7 @@ import com.myretail.store.entity.ProrductPriceDetail;
 public class StorePricingApiApplication implements CommandLineRunner {
 
 	@Autowired
-	private ProrductPriceDetailRepository repository;
+	private PriceDetailRepository repository;
 
 	/**
 	 * The main method.
@@ -52,7 +52,7 @@ public class StorePricingApiApplication implements CommandLineRunner {
 				double result = start + (random * (end - start));
 				BigDecimal price = new BigDecimal(Double.toString(result));
 				price = price.setScale(2, BigDecimal.ROUND_HALF_EVEN); // Round to 2 decimal points
-				repository.save(new ProrductPriceDetail(item, price, Currency.getInstance("USD"))); // Default conside USD code
+				repository.save(new PriceDetail(item, price, Currency.getInstance("USD"))); // Default conside USD code
 			}
 
 		});

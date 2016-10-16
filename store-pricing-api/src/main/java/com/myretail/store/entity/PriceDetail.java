@@ -9,10 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * The Class ProrductPriceDetail.
+ * The Class PriceDetail.
  */
 @Document(collection = "prorductPriceDetail")
-public class ProrductPriceDetail {
+public class PriceDetail {
 	
 	/** The id. */
 	@Id
@@ -31,7 +31,7 @@ public class ProrductPriceDetail {
 	/**
 	 * Instantiates a new prorduct price detail.
 	 */
-	public ProrductPriceDetail(){
+	public PriceDetail(){
 		
 	}
 	
@@ -42,7 +42,7 @@ public class ProrductPriceDetail {
 	 * @param price the price
 	 * @param currencyCode the currency code
 	 */
-	public ProrductPriceDetail(Long productId, BigDecimal price, Currency currencyCode) {
+	public PriceDetail(Long productId, BigDecimal price, Currency currencyCode) {
 		super();
 		this.productId = productId;
 		this.price = price;

@@ -12,23 +12,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.myretail.store.entity.ProrductPriceDetail;
+import com.myretail.store.entity.PriceDetail;
 import com.myretail.store.exception.ProductNotFoundException;
-import com.myretail.store.service.ProrductPriceDetailService;
+import com.myretail.store.service.PriceDetailService;
 
 /**
- * The Class ProductPriceDetailResource.
+ * The Class PriceDetailResource.
  */
 @RestController
 @RequestMapping("/v1/product/{id}/price")
-public class ProductPriceDetailResource {
+public class PriceDetailResource {
 
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProductPriceDetailResource.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PriceDetailResource.class);
 
 	/** The prorduct price detail service. */
 	@Autowired
-	private ProrductPriceDetailService prorductPriceDetailService;
+	private PriceDetailService priceDetailService;
 
 	/**
 	 * Find price details by product id.
@@ -38,10 +38,10 @@ public class ProductPriceDetailResource {
 	 */
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseStatus(HttpStatus.OK)
-	public ProrductPriceDetail findPriceDetailsByProductId(@PathVariable("id") Long productId) {
-		LOGGER.debug("ProductPriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id "
+	public PriceDetail findPriceDetailsByProductId(@PathVariable("id") Long productId) {
+		LOGGER.debug("PriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id "
 				+ productId);
-		return prorductPriceDetailService.findByProductId(productId);
+		return priceDetailService.findByProductId(productId);
 	}
 	
 	/**
@@ -52,10 +52,10 @@ public class ProductPriceDetailResource {
 	 */
 	@RequestMapping(method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updatePriceDetail(@PathVariable("id") Long productId, @RequestBody(required = true) ProrductPriceDetail priceDetails) {
-		LOGGER.debug("ProductPriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id "
+	public void updatePriceDetail(@PathVariable("id") Long productId, @RequestBody(required = true) PriceDetail priceDetails) {
+		LOGGER.debug("PriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id "
 				+ productId);
-		ProrductPriceDetail dbProrductPriceDetail = prorductPriceDetailService.findByProductId(productId);
+		PriceDetail dbProrductPriceDetail = priceDetailService.findByProductId(productId);
 		if(dbProrductPriceDetail != null){
 			if(priceDetails.getCurrencyCode() != null){
 				dbProrductPriceDetail.setCurrencyCode(priceDetails.getCurrencyCode());
@@ -63,7 +63,7 @@ public class ProductPriceDetailResource {
 			if(priceDetails.getPrice() != null){
 				dbProrductPriceDetail.setPrice(priceDetails.getPrice());
 			}
-			prorductPriceDetailService.updatePriceDetails(dbProrductPriceDetail);
+			priceDetailService.updatePriceDetails(dbProrductPriceDetail);
 		}else{
 			throw new ProductNotFoundException("Product "+productId+" not found.");
 		}
