@@ -50,7 +50,7 @@ public class ProductPriceDetailResource {
 	 * @param productId the product id
 	 * @param priceDetails the price details
 	 */
-	@RequestMapping(method = RequestMethod.PATCH, consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@RequestMapping(method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void updatePriceDetail(@PathVariable("id") Long productId, @RequestBody(required = true) ProrductPriceDetail priceDetails) {
 		LOGGER.debug("ProductPriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id "

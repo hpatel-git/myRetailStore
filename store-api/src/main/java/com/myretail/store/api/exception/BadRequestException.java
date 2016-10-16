@@ -32,6 +32,11 @@ public class BadRequestException extends RuntimeException {
 		this.errorDetails = errorDetails;
 	}
 
+	public BadRequestException(String msg) {
+		super(msg);
+		this.errorDetails = new ApiResponseBody.ResponseBuilder<ErrorDetail>(msg).build();
+	}
+	
 	public ApiResponseBody<ErrorDetail> getErrorDetails() {
 		return errorDetails;
 	}

@@ -9,14 +9,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myretail.store.api.exception.BadRequestException;
 import com.myretail.store.api.exception.LookupServiceException;
 import com.myretail.store.api.model.BaseServiceResponse;
+import com.myretail.store.api.model.PriceServiceErrorRes;
 import com.myretail.store.api.model.PriceServiceResponse;
+import com.myretail.store.api.model.PriceUpdateRequest;
 
 /**
  * The Class PriceLookupService.
@@ -34,7 +42,8 @@ public class PriceLookupService {
 	private String priceLookupUrl;
 
 	private final RestTemplate restTemplate;
-
+	private ObjectMapper objectMapper;
+	
 	/**
 	 * Instantiates a new price lookup service.
 	 *
@@ -43,6 +52,7 @@ public class PriceLookupService {
 	 */
 	public PriceLookupService(RestTemplateBuilder restTemplateBuilder) {
 		this.restTemplate = restTemplateBuilder.build();
+		objectMapper = new ObjectMapper();
 	}
 
 	/**
@@ -65,5 +75,31 @@ public class PriceLookupService {
 		}
 		return new AsyncResult<>(response);
 	}
+	
+	@Async
+	public Future<BaseServiceResponse> updatePrice(PriceUpdateRequest priceUpdateReq) {
+		PriceServiceResponse response = new PriceServiceResponse();
+		try {
+			LOGGER.info("Looking up pricing details by Product Id : " + priceUpdateReq.getProductId());
+			String url = String.format(priceLookupUrl, priceUpdateReq.getProductId());
+			restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<PriceUpdateRequest>(priceUpdateReq), String.class);
+		}catch(HttpClientErrorException e){
+			LOGGER.error("Error while updating price",e);
+			String errorMsg = null;
+			try{
+				PriceServiceErrorRes error = objectMapper.readValue(e.getResponseBodyAsString(), PriceServiceErrorRes.class);
+				errorMsg = error.getMessage();
+			}catch(Exception error){ 
+				LOGGER.error("Error while parsing response from Pricing Service",error);
+				errorMsg = error.getMessage();
+			}
+			response.addError(errorMsg);
+		} catch (Exception e) {
+			LOGGER.error("Error while looking up product details", e);
+			throw new LookupServiceException("Price Lookup Service is unavailable");
+		}
+		return new AsyncResult<>(response);
+	}
+	
 
 }

@@ -3,27 +3,23 @@
  */
 package com.myretail.store.api.rest;
 
-import java.util.Locale;
+import java.util.Currency;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.myretail.store.api.exception.BadRequestException;
 import com.myretail.store.api.exception.LookupServiceException;
@@ -33,6 +29,7 @@ import com.myretail.store.api.model.BaseServiceResponse;
 import com.myretail.store.api.model.ErrorDetail;
 import com.myretail.store.api.model.PriceDetail;
 import com.myretail.store.api.model.PriceServiceResponse;
+import com.myretail.store.api.model.PriceUpdateRequest;
 import com.myretail.store.api.model.ProductDetail;
 import com.myretail.store.api.model.ProductServiceResponse;
 import com.myretail.store.api.service.PriceLookupService;
@@ -94,11 +91,36 @@ public class ProductResource {
 	/**
 	 * Update product price.
 	 */
-	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH, consumes = {
-			MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
-	@ResponseStatus(HttpStatus.CREATED)
-	public void updateProductPrice() {
-
+	@RequestMapping(value = "/{id}/price", method = RequestMethod.PATCH, consumes = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateProductPrice(@PathVariable("id")Long productId, @RequestBody(required = true) PriceUpdateRequest priceUpdateRequest) {
+		priceUpdateRequest.setProductId(productId);
+		if (!StringUtils.isEmpty(priceUpdateRequest.getCurrencyCode())) { // Validate Currency Code
+			try {
+				Currency.getInstance(priceUpdateRequest.getCurrencyCode());
+			} catch (IllegalArgumentException e) {
+				LOGGER.error("Invalid Currency Code", e);
+				throw new BadRequestException("Invalid Currency Code");
+			}
+		}
+		Future<BaseServiceResponse> pricingServiceResponse = priceLookupService.updatePrice(priceUpdateRequest);
+		while(!pricingServiceResponse.isDone()){
+			try {
+				Thread.sleep(10); // Check status at every 10 ms
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				LOGGER.error("Error while waiting to complete", e);
+			}
+		}
+		try {
+			if (pricingServiceResponse.get().getIsError()) {
+				throw new BadRequestException("Bad Response from Pricing Service", handleProductServiceError(pricingServiceResponse));
+			}
+		} catch(ExecutionException | InterruptedException e){
+			LOGGER.error("Error while updating price details from PriceLookupService ", e);
+			throw new LookupServiceException(e.getCause().getMessage());
+		} 
 	}
 
 	/**
@@ -134,30 +156,4 @@ public class ProductResource {
 	}
 
 	
-	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	@ResponseBody
-	public ApiResponseBody<ErrorDetail> handleTypeMismatchException(HttpServletRequest req,
-			MethodArgumentTypeMismatchException ex) {
-		ResponseBuilder<ErrorDetail> errorResponse = new ApiResponseBody.ResponseBuilder<>();
-		errorResponse.addMoreError("Invalid value for field " + ex.getName() + ". Value  '" + ex.getValue() + "' is not allowed");
-		return errorResponse.build();
-	}
-	 
-	@ExceptionHandler(BadRequestException.class)
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	@ResponseBody
-	public ApiResponseBody<ErrorDetail> handleBadRequest(HttpServletRequest req,
-			BadRequestException ex) {
-		return ex.getErrorDetails();
-	}
-	
-	@ExceptionHandler(LookupServiceException.class)
-	@ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
-	@ResponseBody
-	public ApiResponseBody<ErrorDetail> handleLookupServiceException(HttpServletRequest req,
-			LookupServiceException ex) {
-		ResponseBuilder<ErrorDetail> errorResponse = new ApiResponseBody.ResponseBuilder<>(ex.getMessage());
-		return errorResponse.build();
-	}
 }
