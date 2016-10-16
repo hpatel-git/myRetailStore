@@ -31,7 +31,7 @@ frolvlad/alpine-oraclejdk8   slim                ea24082fc934        6 weeks ago
 
 * Run docker image 
 ``` 
-$ docker run -p 8182:8182 hpatel511/store-api:0.0.1 
+$ docker run -p 8182:8182 -e PRICE_LOOKUP_HOST=192.168.99.100 -e PRICE_LOOKUP_PORT=8183 hpatel511/store-api:0.0.1 
 ```
 
 * Verify service status
