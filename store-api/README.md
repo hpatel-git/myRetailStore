@@ -67,7 +67,7 @@ $ docker run -p 8181:8181 myretail/store-auth-server:0.0.1
 
 * Health Check for API Gateway
 ```
-curl -i http://192.168.99.100:8182/eui-store-api/health
+curl -i http://192.168.99.100:8182/store-api/health
 
 {"status":"UP"}
 ``` 

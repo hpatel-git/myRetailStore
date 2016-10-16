@@ -37,9 +37,11 @@ import com.myretail.store.api.model.ProductServiceResponse;
 @Service
 public class ProductLookupService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductLookupService.class);
+	
 	@Value("${product.lookup.url}")
 	private String productLookupUrl;
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProductLookupService.class);
+	
 
 	private final RestTemplate restTemplate;
 	private ObjectMapper objectMapper;

@@ -78,7 +78,7 @@ public class ProductResource {
 			throw new LookupServiceException(e.getCause().getMessage());
 		} 
 		ProductDetail details = new ProductDetail.ProductDetailBuilder(productDetailRes.getProductId(),
-				productDetailRes.getProductName()).price(new PriceDetail(priceDetailsRes.getValue(), priceDetailsRes.getCurrencyCode())).build();
+				productDetailRes.getProductName()).price(new PriceDetail(priceDetailsRes.getPrice(), priceDetailsRes.getCurrencyCode().getSymbol())).build();
 		return new ApiResponseBody.ResponseBuilder<ProductDetail>(details).build();
 	}
 
