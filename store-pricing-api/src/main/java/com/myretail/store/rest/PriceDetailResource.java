@@ -47,7 +47,7 @@ public class PriceDetailResource {
 		LOGGER.debug("PriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id " + productId);
 		PriceDetail priceDetail = priceDetailService.findByProductId(productId);
 		if(priceDetail == null){
-			throw new ProductNotFoundException("Product " + productId + " not found.");
+			throw new ProductNotFoundException("Price for product " + productId + " not found.");
 		}
 		return priceDetail;
 	}
@@ -76,7 +76,7 @@ public class PriceDetailResource {
 			}
 			priceDetailService.updatePriceDetails(dbProrductPriceDetail);
 		} else {
-			throw new ProductNotFoundException("Product " + productId + " not found.");
+			throw new ProductNotFoundException("Price for product " + productId + " not found.");
 		}
 	}
 

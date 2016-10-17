@@ -106,7 +106,7 @@ public class PriceDetailResourceTests {
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
 				.andReturn().getResolvedException().getMessage();
 		assertNotNull(error);
-		assertEquals("Product 1523200117729 not found.", error);
+		assertEquals("Price for product 1523200117729 not found.", error);
  
 	}
 	
