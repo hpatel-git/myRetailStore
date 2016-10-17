@@ -113,7 +113,7 @@ myRetail Pricing Server documer image available on Docker Hub.
 
 ```sh
 $ docker pull hpatel511/store-pricing-api:0.0.1
-$ docker run -p 8183:8183 -e MONGODB_HOST=10.0.0.9 -e MONGODB_PORT=27017 -e MONGODB_DATABASE=my_retail_product_price_db hpatel511/store-pricing-api:0.0.1
+$ docker run -p 8183:8183 -e MONGODB_HOST=<MONGO_DB_HOST> -e MONGODB_PORT=27017 -e MONGODB_DATABASE=my_retail_product_price_db hpatel511/store-pricing-api:0.0.1
 ```
 
 **Available APIs** <br>
