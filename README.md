@@ -99,6 +99,13 @@ $ curl -XPUT -H 'Authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJh
 myRetail Pricing Server stores product price data into MongoDB(noSQL) server. Pricing Server is internal service. It will not be exposed out side network. Only myRetail API Gateway server can call this service. By default this service run on 8183 port
 with context 'pricing-api'
 
+Price for only following products are available into Pricing Server : 
+* 15117729 
+* 16483589
+* 16696652
+* 16752456
+* 15643793
+
 myRetail Pricing Server documer image available on Docker Hub. 
 
 ```sh
