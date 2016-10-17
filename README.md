@@ -57,7 +57,17 @@ $ docker run -p 8182:8182 -e PRICE_LOOKUP_HOST=192.168.99.100 -e PRICE_LOOKUP_PO
 * myRetail API will not return partial response means if any one of the servers from Product Detail or Price Details are down , then Product retrieval API will fail. 
 * Product Detail Server is down and only Price Details Service is up and running then , Price Update API will result 
   into success
-  
+* While updating price , there is no check for Product in Thirdparty server. Assuming that using event based architecture ,
+consistency of distrubuted data has been handled.
+
+APIs are tested using folloing: 
+* **15117729** - Available in Thirdparty server and Pricing server
+* 16483589 - Not available in Thirdparty product server and available in pricing server 
+* **16696652** - Available in Thirdparty server and Pricing server
+* 16752456 - Not available in Thirdparty product server and available in pricing server  
+* 15643793 - Not available in Thirdparty product server and available in pricing server 
+
+
 **Available APIs** <br>
 * Get Product Details <br>
 **Path :** store-api/v1/products/<PRODUCT_ID> <br>
@@ -98,14 +108,7 @@ $ curl -XPUT -H 'Authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJh
 
 myRetail Pricing Server stores product price data into MongoDB(noSQL) server. Pricing Server is internal service. It will not be exposed out side network. Only myRetail API Gateway server can call this service. By default this service run on 8183 port
 with context 'pricing-api'
-
-Price for only following products are available into Pricing Server : 
-* 15117729 
-* 16483589
-* 16696652
-* 16752456
-* 15643793
-
+ 
 myRetail Pricing Server documer image available on Docker Hub. 
 
 ```sh
