@@ -32,7 +32,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	 */
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.requestMatchers().antMatchers(HttpMethod.PATCH, "/v1/products/**").and().authorizeRequests()   // Only protect PATCH operation on /v1/product
+		http.requestMatchers().antMatchers(HttpMethod.PUT, "/v1/products/**").and().authorizeRequests()   // Only protect PATCH operation on /v1/product
 				.anyRequest().access("#oauth2.hasScope('openid') and hasRole('ROLE_ADMIN')");
 	}
 

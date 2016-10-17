@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,9 +73,11 @@ public class ProductResource {
 		PriceServiceResponse priceDetailsRes = null;
 		try {
 			if (productServiceResponse.get().getIsError()) {
+				LOGGER.debug("Bad response from Product Service.");
 				throw new BadRequestException("Bad response from Product Service",handleProductServiceError(productServiceResponse));
 			}
 			if (pricingServiceResponse.get().getIsError()) {
+				LOGGER.debug("Bad Response from Pricing Service.");
 				throw new BadRequestException("Bad Response from Pricing Service", handleProductServiceError(pricingServiceResponse));
 			}
 			priceDetailsRes = (PriceServiceResponse) pricingServiceResponse.get();
@@ -84,6 +87,9 @@ public class ProductResource {
 			LOGGER.error("Error while looking up product details from ProductLookupService ", e);
 			throw new LookupServiceException(e.getCause().getMessage());
 		} 
+		LOGGER.debug(
+				"Product ID " + productDetailRes.getProductId() + " Product Name " + productDetailRes.getProductName()
+						+ " Price" + priceDetailsRes.getPrice() + " Currency " + priceDetailsRes.getCurrencyCode());
 		ProductDetail details = new ProductDetail.ProductDetailBuilder(productDetailRes.getProductId(),
 				productDetailRes.getProductName()).price(new PriceDetail(priceDetailsRes.getPrice(), priceDetailsRes.getCurrencyCode().getSymbol())).build();
 		return new ApiResponseBody.ResponseBuilder<ProductDetail>(details).build();
@@ -100,9 +106,11 @@ public class ProductResource {
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void updateProductPrice(@PathVariable("id")Long productId, @RequestBody(required = true) PriceUpdateRequest priceUpdateRequest) {
+		LOGGER.debug("ProductResource.updateProductPrice : Updating price for Product "+productId + " Request Body "+priceUpdateRequest);
 		priceUpdateRequest.setProductId(productId);
 		if (!StringUtils.isEmpty(priceUpdateRequest.getCurrencyCode())) { // Validate Currency Code
 			try {
+				LOGGER.debug("Currency Code in Request "+priceUpdateRequest.getCurrencyCode());
 				Currency.getInstance(priceUpdateRequest.getCurrencyCode());
 			} catch (IllegalArgumentException e) {
 				LOGGER.error("Invalid Currency Code", e);
@@ -122,6 +130,7 @@ public class ProductResource {
 			if (pricingServiceResponse.get().getIsError()) {
 				throw new BadRequestException("Bad Response from Pricing Service", handleProductServiceError(pricingServiceResponse));
 			}
+			LOGGER.debug("Price for Product "+productId + " has been updated by "+ SecurityContextHolder.getContext().getAuthentication().getName());
 		} catch(ExecutionException | InterruptedException e){
 			LOGGER.error("Error while updating price details from PriceLookupService ", e);
 			throw new LookupServiceException(e.getCause().getMessage());
