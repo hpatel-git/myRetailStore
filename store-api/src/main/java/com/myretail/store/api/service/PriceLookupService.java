@@ -41,8 +41,10 @@ public class PriceLookupService {
 	@Value("${price.lookup.url}")
 	private String priceLookupUrl;
 
-	private final RestTemplate restTemplate;
+	private RestTemplate restTemplate;
 	private ObjectMapper objectMapper;
+	
+	  
 	
 	/**
 	 * Instantiates a new price lookup service.
@@ -63,7 +65,7 @@ public class PriceLookupService {
 	 * @return the future
 	 */
 	@Async
-	public Future<BaseServiceResponse> findProductDetail(Long productId) {
+	public Future<BaseServiceResponse> findPriceDetail(Long productId) {
 		PriceServiceResponse response = null;
 		try {
 			LOGGER.info("Looking up pricing details by Product Id : " + productId);

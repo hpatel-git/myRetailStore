@@ -38,7 +38,9 @@ import com.myretail.store.api.service.ProductLookupService;
 /**
  * ProductResource.
  *
- * @author Hardikkumar Patel
+ * @author Hardikkumar patel(hardikkumar.ce@gmail.com)
+ * @version 1.0
+ * @since   10/15/2016
  */
 @RestController
 @RequestMapping("/v1/products")
@@ -64,7 +66,7 @@ public class ProductResource {
 	@ResponseBody
 	public ApiResponseBody<ProductDetail> retrieveProductDtlsById(@PathVariable("id") Long productId) {
 		LOGGER.debug("ProductResource.retrieveProductDtlsById : Retrieving product details by Product ID " + productId);
-		Future<BaseServiceResponse> pricingServiceResponse = priceLookupService.findProductDetail(productId);
+		Future<BaseServiceResponse> pricingServiceResponse = priceLookupService.findPriceDetail(productId);
 		Future<BaseServiceResponse> productServiceResponse = productLookupService.findProductDetail(productId);
 		waitForTasksToComplete(pricingServiceResponse,productServiceResponse);
 		ProductServiceResponse productDetailRes = null;

@@ -16,6 +16,10 @@ import com.myretail.store.entity.PriceDetail;
 
 /**
  * The Class StorePricingApiApplication.
+ * 
+ * @author Hardikkumar patel(hardikkumar.ce@gmail.com)
+ * @version 1.0
+ * @since 10/15/2016
  */
 @SpringBootApplication
 public class StorePricingApiApplication implements CommandLineRunner {
@@ -26,7 +30,8 @@ public class StorePricingApiApplication implements CommandLineRunner {
 	/**
 	 * The main method.
 	 *
-	 * @param args the arguments
+	 * @param args
+	 *            the arguments
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(StorePricingApiApplication.class, args);
@@ -37,10 +42,12 @@ public class StorePricingApiApplication implements CommandLineRunner {
 	 * be between 400 and 500 USD
 	 */
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.springframework.boot.CommandLineRunner#run(java.lang.String[])
 	 */
-	
+
 	@Override
 	public void run(String... args) throws Exception {
 		List<Long> initialData = Arrays.asList(15117729l, 16483589l, 16696652l, 16752456l, 15643793l);
@@ -51,8 +58,8 @@ public class StorePricingApiApplication implements CommandLineRunner {
 				double random = new Random().nextDouble();
 				double result = start + (random * (end - start));
 				BigDecimal price = new BigDecimal(Double.toString(result));
-				price = price.setScale(2, BigDecimal.ROUND_HALF_EVEN); // Round to 2 decimal points
-				repository.save(new PriceDetail(item, price, Currency.getInstance("USD"))); // Default conside USD code
+				price = price.setScale(2, BigDecimal.ROUND_HALF_EVEN); // Round to 2 decimal  points
+				repository.save(new PriceDetail(item, price, Currency.getInstance("USD"))); // Default consider USD code
 			}
 
 		});

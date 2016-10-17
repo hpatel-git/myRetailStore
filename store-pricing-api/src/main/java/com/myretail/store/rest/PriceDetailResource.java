@@ -18,6 +18,10 @@ import com.myretail.store.service.PriceDetailService;
 
 /**
  * The Class PriceDetailResource.
+ * 
+ * @author Hardikkumar patel(hardikkumar.ce@gmail.com)
+ * @version 1.0
+ * @since 10/15/2016
  */
 @RestController
 @RequestMapping("/v1/products/{id}/price")
@@ -33,40 +37,44 @@ public class PriceDetailResource {
 	/**
 	 * Find price details by product id.
 	 *
-	 * @param productId the product id
+	 * @param productId
+	 *            the product id
 	 * @return the prorduct price detail
 	 */
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseStatus(HttpStatus.OK)
 	public PriceDetail findPriceDetailsByProductId(@PathVariable("id") Long productId) {
-		LOGGER.debug("PriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id "
-				+ productId);
+		LOGGER.debug(
+				"PriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id " + productId);
 		return priceDetailService.findByProductId(productId);
 	}
-	
+
 	/**
 	 * Update price detail.
 	 *
-	 * @param productId the product id
-	 * @param priceDetails the price details
+	 * @param productId
+	 *            the product id
+	 * @param priceDetails
+	 *            the price details
 	 */
 	@RequestMapping(method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updatePriceDetail(@PathVariable("id") Long productId, @RequestBody(required = true) PriceDetail priceDetails) {
-		LOGGER.debug("PriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id "
-				+ productId);
+	public void updatePriceDetail(@PathVariable("id") Long productId,
+			@RequestBody(required = true) PriceDetail priceDetails) {
+		LOGGER.debug(
+				"PriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id " + productId);
 		PriceDetail dbProrductPriceDetail = priceDetailService.findByProductId(productId);
-		if(dbProrductPriceDetail != null){
-			if(priceDetails.getCurrencyCode() != null){
+		if (dbProrductPriceDetail != null) {
+			if (priceDetails.getCurrencyCode() != null) {
 				dbProrductPriceDetail.setCurrencyCode(priceDetails.getCurrencyCode());
 			}
-			if(priceDetails.getPrice() != null){
+			if (priceDetails.getPrice() != null) {
 				dbProrductPriceDetail.setPrice(priceDetails.getPrice());
 			}
 			priceDetailService.updatePriceDetails(dbProrductPriceDetail);
-		}else{
-			throw new ProductNotFoundException("Product "+productId+" not found.");
+		} else {
+			throw new ProductNotFoundException("Product " + productId + " not found.");
 		}
 	}
-	 
+
 }

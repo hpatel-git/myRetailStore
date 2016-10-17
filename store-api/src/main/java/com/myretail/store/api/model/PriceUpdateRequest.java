@@ -4,7 +4,6 @@
 package com.myretail.store.api.model;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 
 /**
  * The Class PriceServiceResponse.

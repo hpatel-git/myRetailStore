@@ -10,37 +10,44 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * The Class PriceDetail.
+ * 
+ * @author Hardikkumar patel(hardikkumar.ce@gmail.com)
+ * @version 1.0
+ * @since 10/15/2016
  */
 @Document(collection = "prorductPriceDetail")
 public class PriceDetail {
-	
+
 	/** The id. */
 	@Id
 	@JsonIgnore
 	private String id;
-	
+
 	/** The product id. */
 	private Long productId;
-	
+
 	/** The price. */
 	private BigDecimal price;
-	
+
 	/** The currency code. */
 	private Currency currencyCode;
 
 	/**
 	 * Instantiates a new prorduct price detail.
 	 */
-	public PriceDetail(){
-		
+	public PriceDetail() {
+
 	}
-	
+
 	/**
 	 * Instantiates a new prorduct price detail.
 	 *
-	 * @param productId the product id
-	 * @param price the price
-	 * @param currencyCode the currency code
+	 * @param productId
+	 *            the product id
+	 * @param price
+	 *            the price
+	 * @param currencyCode
+	 *            the currency code
 	 */
 	public PriceDetail(Long productId, BigDecimal price, Currency currencyCode) {
 		super();
@@ -61,7 +68,8 @@ public class PriceDetail {
 	/**
 	 * Sets the id.
 	 *
-	 * @param id the new id
+	 * @param id
+	 *            the new id
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -79,7 +87,8 @@ public class PriceDetail {
 	/**
 	 * Sets the currency code.
 	 *
-	 * @param currencyCode the new currency code
+	 * @param currencyCode
+	 *            the new currency code
 	 */
 	public void setCurrencyCode(Currency currencyCode) {
 		this.currencyCode = currencyCode;
@@ -97,7 +106,8 @@ public class PriceDetail {
 	/**
 	 * Sets the product id.
 	 *
-	 * @param productId the new product id
+	 * @param productId
+	 *            the new product id
 	 */
 	public void setProductId(Long productId) {
 		this.productId = productId;
@@ -106,7 +116,8 @@ public class PriceDetail {
 	/**
 	 * Sets the price.
 	 *
-	 * @param price the new price
+	 * @param price
+	 *            the new price
 	 */
 	public void setPrice(BigDecimal price) {
 		this.price = price;
