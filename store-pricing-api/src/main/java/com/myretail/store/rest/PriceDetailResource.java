@@ -44,9 +44,12 @@ public class PriceDetailResource {
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseStatus(HttpStatus.OK)
 	public PriceDetail findPriceDetailsByProductId(@PathVariable("id") Long productId) {
-		LOGGER.debug(
-				"PriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id " + productId);
-		return priceDetailService.findByProductId(productId);
+		LOGGER.debug("PriceDetailResource.findPriceDetailsByProductId Finding price details by Product Id " + productId);
+		PriceDetail priceDetail = priceDetailService.findByProductId(productId);
+		if(priceDetail == null){
+			throw new ProductNotFoundException("Product " + productId + " not found.");
+		}
+		return priceDetail;
 	}
 
 	/**

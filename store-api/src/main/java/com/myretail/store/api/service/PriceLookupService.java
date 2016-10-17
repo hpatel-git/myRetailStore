@@ -66,11 +66,22 @@ public class PriceLookupService {
 	 */
 	@Async
 	public Future<BaseServiceResponse> findPriceDetail(Long productId) {
-		PriceServiceResponse response = null;
+		PriceServiceResponse response = new PriceServiceResponse();
 		try {
 			LOGGER.info("Looking up pricing details by Product Id : " + productId);
 			String url = String.format(priceLookupUrl, productId);
 			response = restTemplate.getForObject(url, PriceServiceResponse.class);
+		} catch(HttpClientErrorException e){
+			LOGGER.error("Error while finding PriceDetail",e);
+			String errorMsg = null;
+			try{
+				PriceServiceErrorRes error = objectMapper.readValue(e.getResponseBodyAsString(), PriceServiceErrorRes.class);
+				errorMsg = error.getMessage();
+			}catch(Exception error){ 
+				LOGGER.error("Error while parsing response from Pricing Service",error);
+				errorMsg = error.getMessage();
+			}
+			response.addError(errorMsg);
 		} catch (Exception e) {
 			LOGGER.error("Error while looking up product details", e);
 			throw new LookupServiceException("Price Lookup Service is unavailable");
