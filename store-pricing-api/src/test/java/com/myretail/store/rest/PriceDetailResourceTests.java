@@ -1,8 +1,11 @@
+/**
+ * @ copyright 2016, myRetail Corporation.
+ */
+
 package com.myretail.store.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import java.math.BigDecimal;
 import java.util.Currency;

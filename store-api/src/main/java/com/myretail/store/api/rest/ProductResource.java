@@ -46,7 +46,6 @@ import com.myretail.store.api.service.ProductLookupService;
 @RequestMapping("/v1/products")
 public class ProductResource {
 
-	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductResource.class);
 	@Autowired
 	private PriceLookupService priceLookupService;
@@ -90,8 +89,12 @@ public class ProductResource {
 		return new ApiResponseBody.ResponseBuilder<ProductDetail>(details).build();
 	}
 
+	 
 	/**
 	 * Update product price.
+	 *
+	 * @param productId the product id
+	 * @param priceUpdateRequest the price update request
 	 */
 	@RequestMapping(value = "/{id}/price", method = RequestMethod.PUT, consumes = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
