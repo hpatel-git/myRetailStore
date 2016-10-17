@@ -27,9 +27,9 @@ public class ApiResponseBody<T>  implements Serializable{
 	
 	private boolean success;
 	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-	private List<ErrorDetail> errors = new ArrayList<>();
+	private transient List<ErrorDetail> errors = new ArrayList<>();
 	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-	private T data;
+	private transient T data;
 
 	/**
 	 * Instantiates a new api response body.

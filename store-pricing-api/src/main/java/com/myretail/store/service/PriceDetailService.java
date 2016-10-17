@@ -12,6 +12,10 @@ import com.myretail.store.rest.PriceDetailResource;
 
 /**
  * The Class PriceDetailService.
+ * 
+ * @author Hardikkumar patel(hardikkumar.ce@gmail.com)
+ * @version 1.0
+ * @since 10/15/2016
  */
 @Service
 public class PriceDetailService {
@@ -23,22 +27,24 @@ public class PriceDetailService {
 	/**
 	 * Find by product id.
 	 *
-	 * @param productId the product id
+	 * @param productId
+	 *            the product id
 	 * @return the prorduct price detail
 	 */
 	public PriceDetail findByProductId(Long productId) {
-		LOGGER.debug("PriceDetailService.findByProductId : Finding Product Id "+productId);
+		LOGGER.debug("PriceDetailService.findByProductId : Finding Product Id " + productId);
 		return priceDetailRepository.findByProductId(productId);
 	}
-	
+
 	/**
 	 * Update price details.
 	 *
-	 * @param priceDetail the price detail
+	 * @param priceDetail
+	 *            the price detail
 	 */
 	@Transactional(readOnly = false)
 	public void updatePriceDetails(PriceDetail priceDetail) {
-		LOGGER.debug("PriceDetailService.updatePriceDetails : Updating Product Price Id Details"+priceDetail.getId());
+		LOGGER.debug("PriceDetailService.updatePriceDetails : Updating Product Price Id Details" + priceDetail.getId());
 		priceDetailRepository.save(priceDetail);
 	}
 }

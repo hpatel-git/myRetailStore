@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * The Class ProductNotFoundException.
+ * 
+ * @author Hardikkumar patel(hardikkumar.ce@gmail.com)
+ * @version 1.0
+ * @since 10/15/2016
  */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ProductNotFoundException extends RuntimeException {
@@ -15,8 +19,10 @@ public class ProductNotFoundException extends RuntimeException {
 	/**
 	 * Instantiates a new lookeup service exception.
 	 *
-	 * @param msg the msg
-	 * @param t the t
+	 * @param msg
+	 *            the msg
+	 * @param t
+	 *            the t
 	 */
 	public ProductNotFoundException(String msg, Throwable t) {
 		super(msg, t);
@@ -25,7 +31,8 @@ public class ProductNotFoundException extends RuntimeException {
 	/**
 	 * Instantiates a new lookeup service exception.
 	 *
-	 * @param msg the msg
+	 * @param msg
+	 *            the msg
 	 */
 	public ProductNotFoundException(String msg) {
 		super(msg);

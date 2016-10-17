@@ -24,7 +24,7 @@ public class PriceDetail {
 	/**
 	 * Instantiates a new price detail.
 	 *
-	 * @param value
+	 * @param price
 	 *            the value
 	 * @param currencyCode
 	 *            the currency code
@@ -35,9 +35,9 @@ public class PriceDetail {
 	}
 
 	/**
-	 * Gets the value.
+	 * Gets the price.
 	 *
-	 * @return the value
+	 * @return the price
 	 */
 	public BigDecimal getPrice() {
 		return price;
